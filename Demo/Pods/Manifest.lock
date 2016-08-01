@@ -1,0 +1,20 @@
+PODS:
+  - LSProgressHUD (0.1.2):
+    - Masonry (~> 1.0.1)
+  - Masonry (1.0.1)
+
+DEPENDENCIES:
+  - LSProgressHUD (from `../`)
+  - Masonry (~> 1.0.1)
+
+EXTERNAL SOURCES:
+  LSProgressHUD:
+    :path: "../"
+
+SPEC CHECKSUMS:
+  LSProgressHUD: aed88cca24ef753b91558ecd55263562fbbbb9d5
+  Masonry: a1a931a0d08870ed8ae415a2ea5ea68ebcac77df
+
+PODFILE CHECKSUM: 7a700485f0ea2b478b40f4328bf54968d83af935
+
+COCOAPODS: 1.0.1
