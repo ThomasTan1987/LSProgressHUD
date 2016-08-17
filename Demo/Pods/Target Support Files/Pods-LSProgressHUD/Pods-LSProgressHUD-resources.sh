@@ -83,17 +83,17 @@ if [[ "$CONFIGURATION" == "Debug" ]]; then
   install_resource "../../LSProgressHUD/Image/right.png"
   install_resource "../../LSProgressHUD/Image/right@2x.png"
   install_resource "../../LSProgressHUD/Image/right@3x.png"
-  install_resource "../../LSProgressHUD/Image/warning.png"
-  install_resource "../../LSProgressHUD/Image/warning@2x.png"
-  install_resource "../../LSProgressHUD/Image/warning@3x.png"
+  install_resource "../../LSProgressHUD/Image/wrong.png"
+  install_resource "../../LSProgressHUD/Image/wrong@2x.png"
+  install_resource "../../LSProgressHUD/Image/wrong@3x.png"
 fi
 if [[ "$CONFIGURATION" == "Release" ]]; then
   install_resource "../../LSProgressHUD/Image/right.png"
   install_resource "../../LSProgressHUD/Image/right@2x.png"
   install_resource "../../LSProgressHUD/Image/right@3x.png"
-  install_resource "../../LSProgressHUD/Image/warning.png"
-  install_resource "../../LSProgressHUD/Image/warning@2x.png"
-  install_resource "../../LSProgressHUD/Image/warning@3x.png"
+  install_resource "../../LSProgressHUD/Image/wrong.png"
+  install_resource "../../LSProgressHUD/Image/wrong@2x.png"
+  install_resource "../../LSProgressHUD/Image/wrong@3x.png"
 fi
 
 mkdir -p "${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}"

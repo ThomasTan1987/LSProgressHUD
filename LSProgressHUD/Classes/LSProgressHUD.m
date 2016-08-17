@@ -41,7 +41,7 @@ static LSProgressHUD *instance = nil;
 }
 + (void)showErrorMessage:(NSString*)message
 {
-    [LSProgressHUD showToastWithImage:[UIImage imageNamed:@"warning"] andText:message];
+    [LSProgressHUD showToastWithImage:[UIImage imageNamed:@"wrong"] andText:message];
 }
 + (void)showSuccessMessage:(NSString*)message
 {
@@ -49,7 +49,7 @@ static LSProgressHUD *instance = nil;
 }
 + (void)showWarningMessage:(NSString*)message
 {
-    [LSProgressHUD showToastWithImage:[UIImage imageNamed:@"warning"] andText:message];
+    [LSProgressHUD showToastWithImage:[UIImage imageNamed:@"wrong"] andText:message];
 }
 #pragma mark - private method
 + (void)showActivity
@@ -126,37 +126,39 @@ static LSProgressHUD *instance = nil;
             make.edges.equalTo(visualEffectView.superview);
         }];
         [control addSubview:view];
-        
-        //text
-        UILabel *label = [[UILabel alloc] init];
-        instance.content = label;
-        label.text = text;
-        label.textAlignment = NSTextAlignmentCenter;
-        label.numberOfLines = 0;
-        [view addSubview:label];
-        [label mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.top.equalTo(view).offset(40);
-            make.bottom.equalTo(view).offset(-40);
-            make.right.lessThanOrEqualTo(view).offset(-20);
-            make.left.greaterThanOrEqualTo(view).offset(40);
-            make.centerX.equalTo(view).offset(10);
-        }];
-        
-        [view mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.width.mas_equalTo(270);
-            make.center.equalTo(view.superview);
-        }];
-        
         //icon
         UIImageView *icon = [[UIImageView alloc] initWithImage:image];
         instance.icon = icon;
         [view addSubview:icon];
         [icon mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.right.equalTo(label.mas_left).offset(-5);
-            make.top.equalTo(icon.superview).offset(40);
+            make.centerX.equalTo(icon.superview);
+            make.top.equalTo(icon.superview).offset(10);
             make.width.mas_equalTo(image.size.width);
             make.height.mas_equalTo(image.size.height);
         }];
+        //text
+        UILabel *label = [[UILabel alloc] init];
+        instance.content = label;
+        label.text = text;
+        label.font = [UIFont systemFontOfSize:14];
+        label.textColor = [UIColor colorWithRed:69/255.f green:69/255.f blue:69/255.f alpha:1];
+        label.textAlignment = NSTextAlignmentCenter;
+        label.numberOfLines = 0;
+        [view addSubview:label];
+        [label mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.top.equalTo(icon.mas_bottom).offset(10);
+            make.bottom.equalTo(view).offset(-10);
+            make.right.lessThanOrEqualTo(view).offset(-20);
+            make.left.greaterThanOrEqualTo(view).offset(20);
+            make.centerX.equalTo(view);
+        }];
+        
+        [view mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.center.equalTo(view.superview);
+            make.width.lessThanOrEqualTo(@270);
+        }];
+        
+        
         [control layoutIfNeeded];
     }else{
         [[UIApplication sharedApplication].keyWindow addSubview:instance.ctrToast];
