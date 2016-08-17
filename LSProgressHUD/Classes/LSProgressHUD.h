@@ -11,6 +11,7 @@
 @interface LSProgressHUD : NSObject
 + (void)show;
 + (void)dismiss;
++ (void)showMessage:(NSString*)message;
 + (void)showErrorMessage:(NSString*)message;
 + (void)showSuccessMessage:(NSString*)message;
 + (void)showWarningMessage:(NSString*)message;

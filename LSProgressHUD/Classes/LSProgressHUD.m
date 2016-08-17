@@ -39,6 +39,10 @@ static LSProgressHUD *instance = nil;
     [instance.ctrActivity removeFromSuperview];
     [instance.ctrToast removeFromSuperview];
 }
++ (void)showMessage:(NSString*)message
+{
+    [LSProgressHUD showToastWithImage:nil andText:message];
+}
 + (void)showErrorMessage:(NSString*)message
 {
     [LSProgressHUD showToastWithImage:[UIImage imageNamed:@"wrong"] andText:message];
@@ -102,6 +106,7 @@ static LSProgressHUD *instance = nil;
         [LSProgressHUD dismiss];
     });
 }
+
 + (void)showToastWithImage:(UIImage*)image andText:(NSString*)text
 {
     if (!instance.ctrToast) {
@@ -128,14 +133,16 @@ static LSProgressHUD *instance = nil;
         [control addSubview:view];
         //icon
         UIImageView *icon = [[UIImageView alloc] initWithImage:image];
-        instance.icon = icon;
-        [view addSubview:icon];
-        [icon mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.centerX.equalTo(icon.superview);
-            make.top.equalTo(icon.superview).offset(10);
-            make.width.mas_equalTo(image.size.width);
-            make.height.mas_equalTo(image.size.height);
-        }];
+        if (image) {
+            instance.icon = icon;
+            [view addSubview:icon];
+            [icon mas_makeConstraints:^(MASConstraintMaker *make) {
+                make.centerX.equalTo(icon.superview);
+                make.top.equalTo(icon.superview).offset(10);
+                make.width.mas_equalTo(image.size.width);
+                make.height.mas_equalTo(image.size.height);
+            }];
+        }
         //text
         UILabel *label = [[UILabel alloc] init];
         instance.content = label;
@@ -146,7 +153,11 @@ static LSProgressHUD *instance = nil;
         label.numberOfLines = 0;
         [view addSubview:label];
         [label mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.top.equalTo(icon.mas_bottom).offset(10);
+            if (image) {
+                make.top.equalTo(icon.mas_bottom).offset(10);
+            }else{
+                make.top.equalTo(view).offset(10);
+            }
             make.bottom.equalTo(view).offset(-10);
             make.right.lessThanOrEqualTo(view).offset(-20);
             make.left.greaterThanOrEqualTo(view).offset(20);
