@@ -58,6 +58,7 @@ static LSProgressHUD *instance = nil;
 #pragma mark - private method
 + (void)showActivity
 {
+    [instance.ctrToast removeFromSuperview];
     if (!instance.ctrActivity) {
         UIControl *control = [[UIControl alloc] initWithFrame:CGRectZero];
         instance.ctrActivity = control;
@@ -102,13 +103,11 @@ static LSProgressHUD *instance = nil;
             make.edges.equalTo(instance.ctrActivity.superview).insets(UIEdgeInsetsMake(0, 0, [LSProgressHUD sharedProgressHUD].keyboardFrame.size.height, 0));
         }];
     }
-    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(visible_duration * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-        [LSProgressHUD dismiss];
-    });
 }
 
 + (void)showToastWithImage:(UIImage*)image andText:(NSString*)text
 {
+    [instance.ctrActivity removeFromSuperview];
     if (!instance.ctrToast) {
         UIControl *control = [[UIControl alloc] initWithFrame:CGRectZero];
         instance.ctrToast = control;
