@@ -36,6 +36,8 @@
 		C0F1C657F5A90ED71C0A1F0DBDB37F4F /* MASCompositeConstraint.h in Headers */ = {isa = PBXBuildFile; fileRef = 475326F2A929CD1AFFB74850961F32C0 /* MASCompositeConstraint.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		C850FFE947588C77B55BEE1B70010892 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A2A6FF208CEC4C2861F1E9D42D651453 /* Foundation.framework */; };
 		CA4E4DD9F21E7384668B6A4FAFF8F846 /* MASLayoutConstraint.h in Headers */ = {isa = PBXBuildFile; fileRef = B48867DE203BCF3BB3DFCAB8FDC7516B /* MASLayoutConstraint.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		E6093D5B1D654ECD00C8625F /* UIAlertController+Block.h in Headers */ = {isa = PBXBuildFile; fileRef = E6093D591D654ECD00C8625F /* UIAlertController+Block.h */; };
+		E6093D5C1D654ECD00C8625F /* UIAlertController+Block.m in Sources */ = {isa = PBXBuildFile; fileRef = E6093D5A1D654ECD00C8625F /* UIAlertController+Block.m */; };
 		E9476B727DE58B7C4C016ACAC9CC6269 /* View+MASAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 2FCC2A09AC3DCD0E4A3D268DAABC5135 /* View+MASAdditions.m */; };
 		EF4EB45FEBA547F0152E554BA48673EB /* NSLayoutConstraint+MASDebugAdditions.h in Headers */ = {isa = PBXBuildFile; fileRef = E158FC65C5404E098F16E26F478DA504 /* NSLayoutConstraint+MASDebugAdditions.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		EF810081A534D73DD792E214FDC5AAA6 /* NSArray+MASAdditions.h in Headers */ = {isa = PBXBuildFile; fileRef = B179F4D3D34A3CE25A698B8D9AC9D6C2 /* NSArray+MASAdditions.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -115,6 +117,8 @@
 		C7C02266037F030E22468AC86802DB57 /* MASViewConstraint.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = MASViewConstraint.m; path = Masonry/MASViewConstraint.m; sourceTree = "<group>"; };
 		D5EC6EDDDD3E503C5B2E967D3FEECFEB /* MASCompositeConstraint.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = MASCompositeConstraint.m; path = Masonry/MASCompositeConstraint.m; sourceTree = "<group>"; };
 		E158FC65C5404E098F16E26F478DA504 /* NSLayoutConstraint+MASDebugAdditions.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = "NSLayoutConstraint+MASDebugAdditions.h"; path = "Masonry/NSLayoutConstraint+MASDebugAdditions.h"; sourceTree = "<group>"; };
+		E6093D591D654ECD00C8625F /* UIAlertController+Block.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIAlertController+Block.h"; sourceTree = "<group>"; };
+		E6093D5A1D654ECD00C8625F /* UIAlertController+Block.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIAlertController+Block.m"; sourceTree = "<group>"; };
 		E86668F20F252C440D1015B816BE59C5 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS9.3.sdk/System/Library/Frameworks/UIKit.framework; sourceTree = DEVELOPER_DIR; };
 		EC0384F145CF471A951BA8E9486AD626 /* Masonry.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = Masonry.h; path = Masonry/Masonry.h; sourceTree = "<group>"; };
 		F8AB44751192F0AA8DA5F75A06138D15 /* MASConstraintMaker.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = MASConstraintMaker.m; path = Masonry/MASConstraintMaker.m; sourceTree = "<group>"; };
@@ -297,6 +301,8 @@
 		CF1C24D9AAE6A5604CE9FA94A59B890E /* Classes */ = {
 			isa = PBXGroup;
 			children = (
+				E6093D591D654ECD00C8625F /* UIAlertController+Block.h */,
+				E6093D5A1D654ECD00C8625F /* UIAlertController+Block.m */,
 				7FD50388B3CEE80DD6F096CA4C517CE4 /* LSProgressHUD.h */,
 				5FBF06FB4561DF04014EE0EF6B1853A1 /* LSProgressHUD.m */,
 			);
@@ -371,6 +377,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				62666EB6DD6599C91DD574E7D70C13B7 /* LSProgressHUD.h in Headers */,
+				E6093D5B1D654ECD00C8625F /* UIAlertController+Block.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -465,6 +472,7 @@
 			files = (
 				281C9B4C643F06A2130A32D2E8CB8794 /* LSProgressHUD-dummy.m in Sources */,
 				4AB5397A9A05CF176532E61D91BE91DA /* LSProgressHUD.m in Sources */,
+				E6093D5C1D654ECD00C8625F /* UIAlertController+Block.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

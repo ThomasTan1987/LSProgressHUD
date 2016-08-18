@@ -10,4 +10,5 @@
 
 @interface UIAlertController (Block)
 + (UIAlertController*)showAlertViewWithTitle:(NSString *)title message:(NSString *)message cancelButtonTitle:(NSString *)cancelButtonTitle otherButtonTitle:(NSString *)otherButtonTitle handler:(void (^)(NSInteger buttonIndex))block;
+- (void)show;
 @end
