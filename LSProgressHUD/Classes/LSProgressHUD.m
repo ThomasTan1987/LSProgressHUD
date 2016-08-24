@@ -45,17 +45,24 @@ static LSProgressHUD *instance = nil;
 }
 + (void)showErrorMessage:(NSString*)message
 {
-    [LSProgressHUD showToastWithImage:[UIImage imageNamed:@"wrong"] andText:message];
+    [LSProgressHUD showToastWithImage:[self imageNamed:@"wrong"] andText:message];
 }
 + (void)showSuccessMessage:(NSString*)message
 {
-    [LSProgressHUD showToastWithImage:[UIImage imageNamed:@"right"] andText:message];
+    [LSProgressHUD showToastWithImage:[self imageNamed:@"right"] andText:message];
 }
 + (void)showWarningMessage:(NSString*)message
 {
-    [LSProgressHUD showToastWithImage:[UIImage imageNamed:@"wrong"] andText:message];
+    [LSProgressHUD showToastWithImage:[self imageNamed:@"wrong"] andText:message];
 }
 #pragma mark - private method
++ (UIImage *)imageNamed:(NSString *)name
+{
+    NSBundle *bundle = [NSBundle bundleForClass:[self class]];
+    //    [bundle URLForResource:@"OtherResources" withExtension:@"bundle"];
+    return [UIImage imageNamed:name inBundle:bundle compatibleWithTraitCollection:nil];
+    
+}
 + (void)showActivity
 {
     [instance.ctrToast removeFromSuperview];
