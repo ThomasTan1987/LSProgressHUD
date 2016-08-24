@@ -12,7 +12,7 @@
 //toast显现时长，单位是秒
 #define visible_duration 1
 @interface LSProgressHUD()
-@property (assign, nonatomic)CGRect keyboardFrame;
+@property (assign, nonatomic)float bottomInset;
 @property (strong, nonatomic)UIControl *ctrToast;
 @property (strong, nonatomic)UIControl *ctrActivity;
 
@@ -70,9 +70,8 @@ static LSProgressHUD *instance = nil;
         UIControl *control = [[UIControl alloc] initWithFrame:CGRectZero];
         instance.ctrActivity = control;
         [[UIApplication sharedApplication].keyWindow addSubview:control];
-        
         [control mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.edges.equalTo(control.superview).insets(UIEdgeInsetsMake(0, 0, [LSProgressHUD sharedProgressHUD].keyboardFrame.size.height, 0));
+            make.edges.equalTo(control.superview).insets(UIEdgeInsetsMake(0, 0, instance.bottomInset, 0));
         }];
         
         UIView *view = [[UIView alloc] init];
@@ -107,7 +106,7 @@ static LSProgressHUD *instance = nil;
         [[UIApplication sharedApplication].keyWindow addSubview:instance.ctrActivity];
         
         [instance.ctrActivity mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.edges.equalTo(instance.ctrActivity.superview).insets(UIEdgeInsetsMake(0, 0, [LSProgressHUD sharedProgressHUD].keyboardFrame.size.height, 0));
+            make.edges.equalTo(instance.ctrActivity.superview).insets(UIEdgeInsetsMake(0, 0, instance.bottomInset, 0));
         }];
     }
 }
@@ -121,7 +120,7 @@ static LSProgressHUD *instance = nil;
         [[UIApplication sharedApplication].keyWindow addSubview:control];
         
         [control mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.edges.equalTo(control.superview).insets(UIEdgeInsetsMake(0, 0, [LSProgressHUD sharedProgressHUD].keyboardFrame.size.height, 0));
+            make.edges.equalTo(control.superview).insets(UIEdgeInsetsMake(0, 0, instance.bottomInset, 0));
         }];
         
         UIView *view = [[UIView alloc] init];
@@ -182,7 +181,7 @@ static LSProgressHUD *instance = nil;
         instance.icon.image = image;
         instance.content.text = text;
         [instance.ctrToast mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.edges.equalTo(instance.ctrToast.superview).insets(UIEdgeInsetsMake(0, 0, [LSProgressHUD sharedProgressHUD].keyboardFrame.size.height, 0));
+            make.edges.equalTo(instance.ctrToast.superview).insets(UIEdgeInsetsMake(0, 0, instance.bottomInset, 0));
         }];
     }
     //更新toast内容
@@ -195,6 +194,6 @@ static LSProgressHUD *instance = nil;
 {
     NSDictionary *userInfo = [notification userInfo];
     NSValue *aValue = [userInfo objectForKey:UIKeyboardFrameEndUserInfoKey];
-    self.keyboardFrame = [aValue CGRectValue];
+    self.bottomInset = [UIScreen mainScreen].bounds.size.height - [aValue CGRectValue].origin.y;
 }
 @end
