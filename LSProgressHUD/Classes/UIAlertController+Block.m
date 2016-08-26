@@ -1,89 +1,97 @@
 //
-//  TTFloatButton.m
-//  TutorTalk-Consultant
+//  UIAlertController+Block.m
+//  TutorTalk
 //
-//  Created by ThoamsTan on 16/8/4.
-//  Copyright © 2016年 eddytsai. All rights reserved.
+//  Created by ThoamsTan on 16/8/17.
+//  Copyright © 2016年 TutorABC. All rights reserved.
 //
 
-#import "TTFloatButton.h"
-@interface TTFloatButton()
-@property(nonatomic, strong)NSValue *startPoint;
-@property (nonatomic, copy)FloatButtonTaped floatButtonTaped;
+#import "UIAlertController+Block.h"
+#import <objc/runtime.h>
+@interface UIAlertController (Private)
+
+@property (nonatomic, strong) UIWindow *alertWindow;
+
 @end
-@implementation TTFloatButton
-static TTFloatButton *floatButton = nil;
-+ (TTFloatButton *)sharedFloatButtonWithBlock:(FloatButtonTaped)floatButtonTaped
-{
-    static dispatch_once_t onceToken;
-    dispatch_once(&onceToken, ^{
-        floatButton = [[TTFloatButton alloc] initWithFrame:CGRectMake(0, 0, 50, 50)];
-        
-        floatButton.backgroundColor = [UIColor blackColor];
-        floatButton.alpha = 0.8;
-        floatButton.floatButtonTaped = floatButtonTaped;
-        floatButton.layer.cornerRadius = 5;
-        floatButton.layer.borderWidth = 1;
-        floatButton.layer.borderColor = [UIColor whiteColor].CGColor;
-        floatButton.windowLevel = UIWindowLevelAlert + 1;
-        floatButton.hidden = NO;
-        floatButton.rootViewController = [[UIViewController alloc] init];
-        //
-        UIPanGestureRecognizer *pan = [[UIPanGestureRecognizer alloc] initWithTarget:floatButton action:@selector(panGesture:)];
-        [floatButton addGestureRecognizer:pan];
-        //
-        UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:floatButton action:@selector(tapGesture:)];
-        [floatButton addGestureRecognizer:tap];
-    });
-    return floatButton;
+
+@implementation UIAlertController (Private)
+
+@dynamic alertWindow;
+
+- (void)setAlertWindow:(UIWindow *)alertWindow {
+    objc_setAssociatedObject(self, @selector(alertWindow), alertWindow, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 }
-- (void)panGesture:(UIPanGestureRecognizer*)pan
-{
-    switch (pan.state) {
-        case UIGestureRecognizerStateBegan: {
-            CGPoint currentPoint = [pan translationInView:[UIApplication sharedApplication].keyWindow];
-            self.startPoint = [NSValue valueWithCGPoint:currentPoint];
-            break;
-        }
-        case UIGestureRecognizerStateChanged: {
-            [self setCenter:[pan locationInView:[UIApplication sharedApplication].keyWindow]];
-            break;
-        }
-        case UIGestureRecognizerStateEnded:
-        case UIGestureRecognizerStateCancelled:
-        case UIGestureRecognizerStateFailed: {
-            CGPoint currentPoint = [pan locationInView:[UIApplication sharedApplication].keyWindow];
-            NSInteger right = [UIApplication sharedApplication].keyWindow.frame.size.width - currentPoint.x;
-            
-            [UIView animateWithDuration:0.5 animations:^{
-                CGPoint newPoint;
-                float y = 0;
-                if (currentPoint.y - self.frame.size.height/2 < 0) {
-                    y = self.frame.size.height/2;
-                }else if (currentPoint.y + self.frame.size.height/2> [UIApplication sharedApplication].keyWindow.frame.size.height) {
-                    y = [UIApplication sharedApplication].keyWindow.frame.size.height - self.frame.size.height/2;
-                } else {
-                    y = currentPoint.y;
-                }
-                if (currentPoint.x < right) {
-                    newPoint = CGPointMake(self.frame.size.width/2, y);
-                }else{
-                    newPoint = CGPointMake([UIApplication sharedApplication].keyWindow.frame.size.width - self.frame.size.width/2, y);
-                }
-                
-                [self setCenter:newPoint];
-            }];
-            break;
-        }
-        default:
-            break;
-    }
+
+- (UIWindow *)alertWindow {
+    return objc_getAssociatedObject(self, @selector(alertWindow));
 }
-- (void)tapGesture:(UITapGestureRecognizer*)tap
+
+@end
+
+@implementation UIAlertController (Block)
+- (void)dealloc
 {
-    if (self.floatButtonTaped)
-    {
-        self.floatButtonTaped();
+    NSLog(@"*******dealloc********UIAlertController (Block)********");
+}
++ (UIAlertController*)showAlertViewWithTitle:(NSString *)title message:(NSString *)message cancelButtonTitle:(NSString *)cancelButtonTitle otherButtonTitle:(NSString *)otherButtonTitle handler:(void (^)(NSInteger buttonIndex))block
+{
+    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:title message:message preferredStyle:UIAlertControllerStyleAlert];
+    //关联block
+    if (block){
+        objc_setAssociatedObject(alertController, "block", block, OBJC_ASSOCIATION_RETAIN);
     }
+    __weak UIAlertController *weakAlertController = alertController;
+    if (cancelButtonTitle) {
+        UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:cancelButtonTitle style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
+            void (^block)(NSInteger buttonIndex)  = objc_getAssociatedObject(weakAlertController, "block");
+            if (block) {
+                block(0);
+            }
+        }];
+        [cancelAction setValue:[UIColor orangeColor] forKey:@"titleTextColor"];
+        [alertController addAction:cancelAction];
+    }
+    
+    if (otherButtonTitle) {
+        UIAlertAction *otherAction = [UIAlertAction actionWithTitle:otherButtonTitle style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+            void (^block)(NSInteger buttonIndex)  = objc_getAssociatedObject(weakAlertController, "block");
+            if (block) {
+                block(1);
+            }
+        }];
+        [otherAction setValue:[UIColor orangeColor] forKey:@"titleTextColor"];
+        [alertController addAction:otherAction];
+    }
+    return alertController;
+}
+- (void)show {
+    [self show:YES];
+}
+
+- (void)show:(BOOL)animated {
+    self.alertWindow = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];
+    self.alertWindow.rootViewController = [[UIViewController alloc] init];
+    
+    id<UIApplicationDelegate> delegate = [UIApplication sharedApplication].delegate;
+    // Applications that does not load with UIMainStoryboardFile might not have a window property:
+    if ([delegate respondsToSelector:@selector(window)]) {
+        // we inherit the main window's tintColor
+        self.alertWindow.tintColor = delegate.window.tintColor;
+    }
+    
+    // window level is above the top window (this makes the alert, if it's a sheet, show over the keyboard)
+    UIWindow *topWindow = [UIApplication sharedApplication].windows.lastObject;
+    self.alertWindow.windowLevel = topWindow.windowLevel + 1;
+    self.alertWindow.hidden = NO;
+    //    [self.alertWindow makeKeyAndVisible];
+    [self.alertWindow.rootViewController presentViewController:self animated:animated completion:nil];
+}
+
+- (void)viewDidDisappear:(BOOL)animated {
+    [super viewDidDisappear:animated];
+    
+    // precaution to insure window gets destroyed
+    self.alertWindow.hidden = YES;
+    self.alertWindow = nil;
 }
 @end
