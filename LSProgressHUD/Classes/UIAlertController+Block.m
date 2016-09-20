@@ -41,6 +41,7 @@
         objc_setAssociatedObject(alertController, "block", block, OBJC_ASSOCIATION_RETAIN);
     }
     __weak UIAlertController *weakAlertController = alertController;
+    double version = [[UIDevice currentDevice].systemVersion doubleValue];
     if (cancelButtonTitle) {
         UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:cancelButtonTitle style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
             void (^block)(NSInteger buttonIndex)  = objc_getAssociatedObject(weakAlertController, "block");
@@ -48,7 +49,10 @@
                 block(0);
             }
         }];
-        [cancelAction setValue:[UIColor orangeColor] forKey:@"titleTextColor"];
+        if (version>=9.0) {
+            [cancelAction setValue:[UIColor orangeColor] forKey:@"titleTextColor"];
+        }
+        
         [alertController addAction:cancelAction];
     }
     
@@ -59,7 +63,9 @@
                 block(1);
             }
         }];
-        [otherAction setValue:[UIColor orangeColor] forKey:@"titleTextColor"];
+        if (version>=9.0) {
+            [otherAction setValue:[UIColor orangeColor] forKey:@"titleTextColor"];
+        }
         [alertController addAction:otherAction];
     }
     return alertController;
@@ -80,7 +86,7 @@
     }
     
     // window level is above the top window (this makes the alert, if it's a sheet, show over the keyboard)
-    UIWindow *topWindow = [UIApplication sharedApplication].windows.lastObject;
+    UIWindow *topWindow = [UIApplication sharedApplication].keyWindow;
     self.alertWindow.windowLevel = topWindow.windowLevel + 1;
     self.alertWindow.hidden = NO;
     //    [self.alertWindow makeKeyAndVisible];
